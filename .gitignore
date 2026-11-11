@@ -1,0 +1,16 @@
+# Build output
+out/
+bin/
+*.class
+
+# Persistent data directory (optional to commit or ignore; demo data created at runtime)
+# keep directory structure
+build_test_data/
+e2e_test_data/
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+.idea/
+*.iml
+.vscode/
