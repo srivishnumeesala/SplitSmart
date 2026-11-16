@@ -1,17 +1,31 @@
-# Multi-stage lightweight JDK build
-FROM eclipse-temurin:21-jdk-alpine AS builder
+# ============================================================
+# SplitSmart — Docker Build
+# Java 21 JDK, no external dependencies
+# ============================================================
+
+# --- Stage 1: Compile ---
+FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /app
+
+# Copy source
 COPY src ./src
-RUN mkdir -p out && find src -name "*.java" | xargs javac -d out
 
-FROM eclipse-temurin:21-jre-alpine
+# Compile: use a file list to avoid xargs issues with many files
+RUN mkdir -p out \
+    && find src -name "*.java" > sources.txt \
+    && javac -d out @sources.txt
+
+# --- Stage 2: Runtime ---
+FROM eclipse-temurin:21-jre
 
 WORKDIR /app
+
+# Copy compiled classes and web frontend
 COPY --from=builder /app/out ./out
 COPY web ./web
 
-# Persistent data directory
+# Data folder for CSV persistence
 RUN mkdir -p data
 
 ENV PORT=8080
