@@ -104,13 +104,6 @@ public class WebServer {
                 return u;
             }
         }
-        // Fallback: if only one user exists in system, use that user for convenience
-        if (dataStore.getCurrentUser() != null) {
-            return dataStore.getCurrentUser();
-        }
-        if (dataStore.getUsers().size() == 1) {
-            return dataStore.getUsers().get(0);
-        }
         return null;
     }
 
