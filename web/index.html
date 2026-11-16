@@ -4,470 +4,405 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SplitSmart — Split expenses. Settle fairly. Stay friends.</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23D9701A'/%3E%3Cg stroke='white' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='9' cy='11' r='3' fill='none'/%3E%3Ccircle cx='9' cy='21' r='3' fill='none'/%3E%3Cline x1='11.5' y1='12.5' x2='25' y2='8'/%3E%3Cline x1='11.5' y1='19.5' x2='25' y2='24'/%3E%3Cline x1='16' y1='16' x2='25' y2='16'/%3E%3C/g%3E%3C/svg%3E">
+    <meta name="description" content="SplitSmart helps friends, roommates and travel groups record shared expenses, see who owes whom, and get a settle-up plan with the fewest transfers.">
+
+    <!-- SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%23E8721C'/%3E%3Cpath d='M10 14 L30 20 L10 26' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Ccircle cx='10' cy='14' r='3' fill='white'/%3E%3Ccircle cx='10' cy='26' r='3' fill='white'/%3E%3C/svg%3E">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="theme-light">
-    <!-- Auth Container (Shown when logged out) -->
-    <div id="authContainer" class="auth-wrapper">
-        <div class="auth-card glossy-panel">
-            <div class="auth-brand">
-                <div class="auth-logo-wrap">
-                    <svg width="52" height="52" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="32" height="32" rx="9" fill="#D9701A"/>
-                        <g stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="9" cy="11" r="3" fill="none"/>
-                            <circle cx="9" cy="21" r="3" fill="none"/>
-                            <line x1="11.8" y1="12.4" x2="25" y2="8"/>
-                            <line x1="11.8" y1="19.6" x2="25" y2="24"/>
-                            <line x1="17" y1="16" x2="25" y2="16"/>
-                        </g>
-                    </svg>
+
+<!-- ============================================================
+     AUTH SCREEN
+     ============================================================ -->
+<div id="authContainer" class="auth-screen">
+
+    <!-- Left decorative panel -->
+    <div class="auth-left">
+        <div class="auth-left-inner">
+            <div class="hero-logo">
+                <svg width="56" height="56" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="12" fill="white" fill-opacity="0.15"/>
+                    <path d="M10 14 L30 20 L10 26" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="10" cy="14" r="3.5" fill="white"/>
+                    <circle cx="10" cy="26" r="3.5" fill="white"/>
+                </svg>
+                <span class="hero-brand">SplitSmart</span>
+            </div>
+            <h1 class="hero-headline">Split expenses.<br>Settle fairly.<br>Stay friends.</h1>
+            <p class="hero-sub">Track shared costs for trips, meals, rent — then settle up with the minimum transfers possible.</p>
+            <div class="hero-features">
+                <div class="hero-feat">
+                    <span class="feat-icon">⚡</span>
+                    <span>Equal, exact & percentage splits</span>
                 </div>
-                <h1 class="brand-title">SplitSmart</h1>
-                <p class="brand-slogan">Split expenses. Settle fairly. Stay friends.</p>
+                <div class="hero-feat">
+                    <span class="feat-icon">🧮</span>
+                    <span>Minimum cash-flow settlement</span>
+                </div>
+                <div class="hero-feat">
+                    <span class="feat-icon">📊</span>
+                    <span>Spending analytics & charts</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right form panel -->
+    <div class="auth-right">
+        <div class="auth-card">
+
+            <!-- Mobile logo (shown only on small screens) -->
+            <div class="mobile-logo">
+                <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+                    <rect width="40" height="40" rx="10" fill="#E8721C"/>
+                    <path d="M10 14 L30 20 L10 26" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="10" cy="14" r="3.5" fill="white"/>
+                    <circle cx="10" cy="26" r="3.5" fill="white"/>
+                </svg>
+                <span class="mobile-logo-text">SplitSmart</span>
+            </div>
+
+            <!-- Tab switcher -->
+            <div class="auth-tabs" role="tablist">
+                <button id="tabLoginBtn"  class="auth-tab active" onclick="switchTab('login')"  role="tab" aria-selected="true">Log In</button>
+                <button id="tabSignupBtn" class="auth-tab"        onclick="switchTab('signup')" role="tab" aria-selected="false">Sign Up</button>
+                <div class="auth-tab-indicator" id="tabIndicator"></div>
             </div>
 
             <!-- Login Form -->
-            <form id="loginForm" class="auth-form" onsubmit="handleLoginSubmit(event)">
+            <form id="loginForm" class="auth-form" onsubmit="handleLoginSubmit(event)" novalidate>
                 <div class="form-group">
                     <label for="loginUser">Username</label>
-                    <input type="text" id="loginUser" required autocomplete="username" placeholder="e.g. rahul">
+                    <div class="input-wrap">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <input type="text" id="loginUser" placeholder="your username" autocomplete="username" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="loginPass">Password</label>
-                    <input type="password" id="loginPass" required autocomplete="current-password" placeholder="••••••••">
+                    <div class="input-wrap">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password" required>
+                    </div>
                 </div>
-                <div id="loginError" class="error-msg"></div>
-                <button type="submit" class="btn btn-primary btn-block">Log In</button>
-                <div class="auth-toggle">
-                    Don't have an account? <a href="#" onclick="toggleAuthMode(true); return false;">Sign Up</a>
-                </div>
+                <div id="loginError" class="auth-error" role="alert"></div>
+                <button type="submit" class="btn-auth" id="loginSubmitBtn">
+                    <span class="btn-label">Log In</span>
+                    <span class="btn-spinner hidden" id="loginSpinner">⏳</span>
+                </button>
             </form>
 
-            <!-- Register Form -->
-            <form id="registerForm" class="auth-form hidden" onsubmit="handleRegisterSubmit(event)">
+            <!-- Sign Up Form -->
+            <form id="signupForm" class="auth-form hidden" onsubmit="handleRegisterSubmit(event)" novalidate>
                 <div class="form-group">
-                    <label for="regName">Display Name</label>
-                    <input type="text" id="regName" required placeholder="e.g. Rahul Sharma">
+                    <label for="regName">Your Name</label>
+                    <div class="input-wrap">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <input type="text" id="regName" placeholder="e.g. Rahul Sharma" autocomplete="name" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="regUser">Username</label>
-                    <input type="text" id="regUser" required autocomplete="username" placeholder="3-20 characters">
+                    <div class="input-wrap">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <input type="text" id="regUser" placeholder="3–20 characters" autocomplete="username" required>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="regPass">Password (min 6 chars)</label>
-                    <input type="password" id="regPass" required autocomplete="new-password" placeholder="••••••••">
+                    <label for="regPass">Password</label>
+                    <div class="input-wrap">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <input type="password" id="regPass" placeholder="min 6 characters" autocomplete="new-password" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="regPassConfirm">Confirm Password</label>
-                    <input type="password" id="regPassConfirm" required autocomplete="new-password" placeholder="••••••••">
+                    <div class="input-wrap">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <input type="password" id="regPassConfirm" placeholder="repeat password" autocomplete="new-password" required>
+                    </div>
                 </div>
-                <div id="registerError" class="error-msg"></div>
-                <button type="submit" class="btn btn-primary btn-block">Create Account</button>
-                <div class="auth-toggle">
-                    Already have an account? <a href="#" onclick="toggleAuthMode(false); return false;">Log In</a>
-                </div>
+                <div id="registerError" class="auth-error" role="alert"></div>
+                <button type="submit" class="btn-auth" id="signupSubmitBtn">
+                    <span class="btn-label">Create Account</span>
+                </button>
             </form>
+
         </div>
     </div>
+</div>
 
-    <!-- App Shell (Shown when authenticated) -->
-    <div id="appContainer" class="app-layout hidden">
-        <!-- Sidebar -->
-        <aside class="sidebar">
+<!-- ============================================================
+     APP SHELL  (shown when authenticated)
+     ============================================================ -->
+<div id="appContainer" class="app-layout hidden">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-top">
             <div class="sidebar-brand">
-                <div class="brand-logo">
-                    <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="32" height="32" rx="8" fill="var(--accent)"/>
-                        <g stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="9" cy="11" r="3" fill="none"/>
-                            <circle cx="9" cy="21" r="3" fill="none"/>
-                            <line x1="11.8" y1="12.4" x2="25" y2="8"/>
-                            <line x1="11.8" y1="19.6" x2="25" y2="24"/>
-                            <line x1="17" y1="16" x2="25" y2="16"/>
-                        </g>
-                    </svg>
-                    <span>SplitSmart</span>
-                </div>
-                <span class="sidebar-slogan">Split expenses fairly</span>
+                <svg width="30" height="30" viewBox="0 0 40 40" fill="none">
+                    <rect width="40" height="40" rx="10" fill="var(--accent)"/>
+                    <path d="M10 14 L30 20 L10 26" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="10" cy="14" r="3.5" fill="white"/>
+                    <circle cx="10" cy="26" r="3.5" fill="white"/>
+                </svg>
+                <span class="brand-name">SplitSmart</span>
             </div>
+            <span class="brand-tagline">Split expenses fairly</span>
+        </div>
 
-            <nav class="sidebar-nav">
-                <button class="nav-item active" onclick="navigateTo('dashboard')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                    <span>Dashboard</span>
-                </button>
-                <button class="nav-item" onclick="navigateTo('groups')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                    <span>My Groups</span>
-                </button>
-                <button class="nav-item" onclick="navigateTo('transactions')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                    <span>Transactions</span>
-                </button>
-                <button class="nav-item" onclick="navigateTo('analytics')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-                    <span>Analytics</span>
-                </button>
-                <button class="nav-item" onclick="navigateTo('settings')">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                    <span>Settings</span>
-                </button>
-            </nav>
+        <nav class="sidebar-nav">
+            <button class="nav-item active" id="nav-dashboard"    onclick="navigateTo('dashboard')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <span>Dashboard</span>
+            </button>
+            <button class="nav-item" id="nav-groups" onclick="navigateTo('groups')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                <span>My Groups</span>
+            </button>
+            <button class="nav-item" id="nav-transactions" onclick="navigateTo('transactions')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                <span>Transactions</span>
+            </button>
+            <button class="nav-item" id="nav-analytics" onclick="navigateTo('analytics')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                <span>Analytics</span>
+            </button>
+            <button class="nav-item" id="nav-settings" onclick="navigateTo('settings')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                <span>Settings</span>
+            </button>
+        </nav>
 
-            <div class="sidebar-user">
-                <div class="user-meta">
-                    <span id="sidebarUserName" class="user-name">User</span>
-                    <span id="sidebarUserHandle" class="user-handle">@user</span>
-                </div>
-                <button class="btn btn-secondary btn-sm" onclick="handleLogout()">Log Out</button>
+        <div class="sidebar-user">
+            <div class="user-avatar" id="userAvatar">U</div>
+            <div class="user-meta">
+                <span id="sidebarUserName" class="user-name">User</span>
+                <span id="sidebarUserHandle" class="user-handle">@user</span>
             </div>
-        </aside>
-
-        <!-- Main Content Area -->
-        <main class="main-content">
-            <!-- 1. Dashboard View -->
-            <section id="viewDashboard" class="view-page active">
-                <div class="page-header">
-                    <div>
-                        <h2 id="dashboardGreeting" class="page-title">Welcome back</h2>
-                        <span id="dashboardDate" class="page-date"></span>
-                    </div>
-                </div>
-
-                <!-- Wide Balance Summary Card -->
-                <div class="glossy-panel summary-card">
-                    <div class="summary-col">
-                        <span class="summary-label">Total You Are Owed</span>
-                        <span id="kpiOwed" class="summary-val text-accent">₹0.00</span>
-                    </div>
-                    <div class="summary-col">
-                        <span class="summary-label">Total You Owe</span>
-                        <span id="kpiOwe" class="summary-val text-rose">₹0.00</span>
-                    </div>
-                    <div class="summary-col">
-                        <span class="summary-label">Net Balance</span>
-                        <span id="kpiNet" class="summary-val">₹0.00</span>
-                    </div>
-                </div>
-
-                <!-- Mid Row: Groups & Chart -->
-                <div class="dashboard-mid-grid">
-                    <!-- Groups Card -->
-                    <div class="glossy-panel dash-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Your Groups</h3>
-                            <button class="btn btn-secondary btn-sm" onclick="navigateTo('groups')">View All</button>
-                        </div>
-                        <div id="dashGroupsList" class="card-body"></div>
-                    </div>
-
-                    <!-- Spending Breakdown Chart -->
-                    <div class="glossy-panel dash-card">
-                        <div class="card-header">
-                            <h3 class="card-title">Spending by Category</h3>
-                        </div>
-                        <div class="card-body chart-body">
-                            <canvas id="dashCategoryChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recent Activity Card -->
-                <div class="glossy-panel dash-card recent-card">
-                    <div class="card-header">
-                        <h3 class="card-title">Recent Activity</h3>
-                    </div>
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Group</th>
-                                    <th>Paid By</th>
-                                    <th>Category</th>
-                                    <th class="text-right">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody id="recentTableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 2. Groups View -->
-            <section id="viewGroups" class="view-page">
-                <div class="page-header">
-                    <h2 class="page-title">My Groups</h2>
-                    <button class="btn btn-primary" onclick="openCreateGroupModal()">+ Create Group</button>
-                </div>
-                <div id="groupsGrid" class="groups-grid"></div>
-            </section>
-
-            <!-- 3. Group Detail View -->
-            <section id="viewGroupDetail" class="view-page">
-                <div class="page-header">
-                    <div class="header-back-title">
-                        <button class="btn btn-secondary btn-sm" onclick="navigateTo('groups')">← Back</button>
-                        <h2 id="groupDetailName" class="page-title">Group Name</h2>
-                    </div>
-                    <button class="btn btn-primary" onclick="openAddExpenseModal()">+ Add Expense</button>
-                </div>
-
-                <div class="members-bar">
-                    <span class="meta-label">Members:</span>
-                    <div id="groupDetailMembers" class="chips-list"></div>
-                </div>
-
-                <div class="group-detail-grid">
-                    <!-- Balances Card -->
-                    <div class="glossy-panel detail-card">
-                        <h3 class="card-title">Member Balances</h3>
-                        <div class="table-responsive">
-                            <table class="data-table">
-                                <thead>
-                                    <tr>
-                                        <th>Member</th>
-                                        <th class="text-right">Paid</th>
-                                        <th class="text-right">Share</th>
-                                        <th class="text-right">Net</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="groupBalancesBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Settle-Up Plan Card -->
-                    <div class="glossy-panel detail-card">
-                        <h3 id="settlePlanTitle" class="card-title">Settle-Up Plan</h3>
-                        <div id="settleTransfersList" class="transfers-container"></div>
-                    </div>
-                </div>
-
-                <!-- Expenses History Card -->
-                <div class="glossy-panel detail-card" style="margin-top: 18px;">
-                    <h3 class="card-title">Expenses Ledger</h3>
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Paid By</th>
-                                    <th>Category</th>
-                                    <th>Split Type</th>
-                                    <th class="text-right">Amount</th>
-                                    <th class="text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="groupExpensesBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 4. Transactions View -->
-            <section id="viewTransactions" class="view-page">
-                <div class="page-header">
-                    <h2 class="page-title">All Transactions</h2>
-                </div>
-
-                <div class="glossy-panel filter-bar">
-                    <div class="filter-item">
-                        <label>Search</label>
-                        <input type="text" id="filterSearch" placeholder="Filter by description or payer..." oninput="applyTransactionFilters()">
-                    </div>
-                    <div class="filter-item">
-                        <label>Group</label>
-                        <select id="filterGroup" onchange="applyTransactionFilters()"></select>
-                    </div>
-                    <div class="filter-item">
-                        <label>Category</label>
-                        <select id="filterCategory" onchange="applyTransactionFilters()"></select>
-                    </div>
-                    <button class="btn btn-secondary btn-sm" onclick="resetTransactionFilters()">Clear</button>
-                </div>
-
-                <div class="glossy-panel table-panel">
-                    <div class="table-responsive">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Description</th>
-                                    <th>Group</th>
-                                    <th>Paid By</th>
-                                    <th>Category</th>
-                                    <th>Split Type</th>
-                                    <th class="text-right">Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody id="transactionsTableBody"></tbody>
-                        </table>
-                    </div>
-                    <div id="transactionsSummary" class="table-footer-info"></div>
-                </div>
-            </section>
-
-            <!-- 5. Analytics View -->
-            <section id="viewAnalytics" class="view-page">
-                <div class="page-header">
-                    <h2 class="page-title">Spending Analytics</h2>
-                </div>
-
-                <div class="glossy-panel kpi-cards-row">
-                    <div class="kpi-box">
-                        <span class="kpi-label">Total Group Spending</span>
-                        <span id="analyticsTotalSpend" class="kpi-value text-accent">₹0.00</span>
-                    </div>
-                    <div class="kpi-box">
-                        <span class="kpi-label">Top Spending Category</span>
-                        <span id="analyticsTopCat" class="kpi-value">None</span>
-                    </div>
-                    <div class="kpi-box">
-                        <span class="kpi-label">Active Groups</span>
-                        <span id="analyticsGroupCount" class="kpi-value">0</span>
-                    </div>
-                </div>
-
-                <div class="analytics-charts-grid">
-                    <div class="glossy-panel chart-card">
-                        <h3 class="card-title">Spending by Category</h3>
-                        <canvas id="analyticsCategoryChart"></canvas>
-                    </div>
-                    <div class="glossy-panel chart-card">
-                        <h3 class="card-title">Spending by Week</h3>
-                        <canvas id="analyticsWeeklyChart"></canvas>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 6. Settings View -->
-            <section id="viewSettings" class="view-page">
-                <div class="page-header">
-                    <h2 class="page-title">Settings</h2>
-                </div>
-
-                <div class="glossy-panel settings-row">
-                    <div>
-                        <h3 class="card-title">Visual Appearance</h3>
-                        <p class="meta-label">Switch between Warm Amber Light and Dark themes instantly.</p>
-                    </div>
-                    <button id="themeToggleBtn" class="btn btn-secondary" onclick="toggleTheme()">Switch to Dark Mode</button>
-                </div>
-
-                <div class="glossy-panel settings-row">
-                    <div>
-                        <h3 class="card-title">Sample Demo Data</h3>
-                        <p class="meta-label">Populate a Goa Trip group with Aman, Bina, Charan, and Diya to test settlements.</p>
-                    </div>
-                    <button class="btn btn-primary" onclick="loadDemoData()">Load Demo Data</button>
-                </div>
-
-                <div class="glossy-panel settings-row">
-                    <div>
-                        <h3 class="card-title text-rose">Delete All My Data</h3>
-                        <p class="meta-label">Permanently remove all your groups, members, and recorded expenses.</p>
-                    </div>
-                    <button class="btn btn-secondary" style="color: var(--owe-rose);" onclick="resetAllData()">Delete Data</button>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Group Modal -->
-    <div id="groupModal" class="modal-backdrop hidden">
-        <div class="modal-card glossy-panel">
-            <h3 id="groupModalTitle" class="modal-title">Create Group</h3>
-            <form onsubmit="handleSaveGroup(event)">
-                <div class="form-group">
-                    <label>Group Name</label>
-                    <input type="text" id="groupNameInput" required placeholder="e.g. Goa Trip">
-                </div>
-                <div class="form-group">
-                    <label>Members (minimum 2)</label>
-                    <div class="member-add-row">
-                        <input type="text" id="newMemberNameInput" placeholder="Member name">
-                        <button type="button" class="btn btn-secondary" onclick="handleAddMemberChip()">Add</button>
-                    </div>
-                    <div id="modalMembersList" class="chips-editor"></div>
-                </div>
-                <div id="groupModalError" class="error-msg"></div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('groupModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Group</button>
-                </div>
-            </form>
+            <button class="logout-btn" onclick="handleLogout()" title="Log out">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            </button>
         </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- 1. Dashboard -->
+        <section id="viewDashboard" class="view-page active">
+            <div class="page-header">
+                <div>
+                    <h2 id="dashboardGreeting" class="page-title">Welcome back</h2>
+                    <span id="dashboardDate" class="page-date"></span>
+                </div>
+            </div>
+            <div class="summary-strip glossy-panel">
+                <div class="strip-col">
+                    <span class="strip-label">You Are Owed</span>
+                    <span id="kpiOwed" class="strip-val text-green">₹0.00</span>
+                </div>
+                <div class="strip-divider"></div>
+                <div class="strip-col">
+                    <span class="strip-label">You Owe</span>
+                    <span id="kpiOwe" class="strip-val text-rose">₹0.00</span>
+                </div>
+                <div class="strip-divider"></div>
+                <div class="strip-col">
+                    <span class="strip-label">Net Balance</span>
+                    <span id="kpiNet" class="strip-val">₹0.00</span>
+                </div>
+            </div>
+            <div class="dash-grid">
+                <div class="glossy-panel dash-card">
+                    <div class="card-head"><h3 class="card-title">Your Groups</h3><button class="btn-sm-secondary" onclick="navigateTo('groups')">View All</button></div>
+                    <div id="dashGroupsList" class="card-body"></div>
+                </div>
+                <div class="glossy-panel dash-card">
+                    <div class="card-head"><h3 class="card-title">Spending by Category</h3></div>
+                    <div class="card-body chart-wrap"><canvas id="dashCategoryChart"></canvas></div>
+                </div>
+            </div>
+            <div class="glossy-panel recent-card">
+                <div class="card-head"><h3 class="card-title">Recent Activity</h3></div>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead><tr><th>Date</th><th>Description</th><th>Group</th><th>Paid By</th><th>Category</th><th class="text-right">Amount</th></tr></thead>
+                        <tbody id="recentTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Groups -->
+        <section id="viewGroups" class="view-page">
+            <div class="page-header">
+                <h2 class="page-title">My Groups</h2>
+                <button class="btn-primary" onclick="openCreateGroupModal()">+ New Group</button>
+            </div>
+            <div id="groupsGrid" class="groups-grid"></div>
+        </section>
+
+        <!-- 3. Group Detail -->
+        <section id="viewGroupDetail" class="view-page">
+            <div class="page-header">
+                <div class="back-title">
+                    <button class="btn-sm-secondary" onclick="navigateTo('groups')">← Back</button>
+                    <h2 id="groupDetailName" class="page-title">Group</h2>
+                </div>
+                <button class="btn-primary" onclick="openAddExpenseModal()">+ Add Expense</button>
+            </div>
+            <div class="members-bar">
+                <span class="meta-label">Members:</span>
+                <div id="groupDetailMembers" class="chips-row"></div>
+            </div>
+            <div class="detail-grid">
+                <div class="glossy-panel detail-card">
+                    <h3 class="card-title">Member Balances</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead><tr><th>Member</th><th class="text-right">Paid</th><th class="text-right">Share</th><th class="text-right">Net</th></tr></thead>
+                            <tbody id="groupBalancesBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="glossy-panel detail-card">
+                    <h3 id="settlePlanTitle" class="card-title">Settle-Up Plan</h3>
+                    <div id="settleTransfersList" class="transfers-list"></div>
+                </div>
+            </div>
+            <div class="glossy-panel detail-card" style="margin-top:18px">
+                <h3 class="card-title">Expenses Ledger</h3>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead><tr><th>Date</th><th>Description</th><th>Paid By</th><th>Category</th><th>Split</th><th class="text-right">Amount</th><th class="text-center">Actions</th></tr></thead>
+                        <tbody id="groupExpensesBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Transactions -->
+        <section id="viewTransactions" class="view-page">
+            <div class="page-header"><h2 class="page-title">All Transactions</h2></div>
+            <div class="glossy-panel filter-bar">
+                <div class="filter-item"><label>Search</label><input type="text" id="filterSearch" placeholder="Description, payer, group…" oninput="applyTransactionFilters()"></div>
+                <div class="filter-item"><label>Group</label><select id="filterGroup" onchange="applyTransactionFilters()"></select></div>
+                <div class="filter-item"><label>Category</label><select id="filterCategory" onchange="applyTransactionFilters()"></select></div>
+                <button class="btn-sm-secondary" onclick="resetTransactionFilters()">Clear</button>
+            </div>
+            <div class="glossy-panel table-panel">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead><tr><th>Date</th><th>Description</th><th>Group</th><th>Paid By</th><th>Category</th><th>Split</th><th class="text-right">Amount</th></tr></thead>
+                        <tbody id="transactionsTableBody"></tbody>
+                    </table>
+                </div>
+                <div id="transactionsSummary" class="table-footer"></div>
+            </div>
+        </section>
+
+        <!-- 5. Analytics -->
+        <section id="viewAnalytics" class="view-page">
+            <div class="page-header"><h2 class="page-title">Spending Analytics</h2></div>
+            <div class="glossy-panel kpi-row">
+                <div class="kpi-box"><span class="kpi-label">Total Group Spending</span><span id="analyticsTotalSpend" class="kpi-value text-accent">₹0.00</span></div>
+                <div class="kpi-box"><span class="kpi-label">Top Category</span><span id="analyticsTopCat" class="kpi-value">None</span></div>
+                <div class="kpi-box"><span class="kpi-label">Active Groups</span><span id="analyticsGroupCount" class="kpi-value">0</span></div>
+            </div>
+            <div class="analytics-grid">
+                <div class="glossy-panel chart-card"><h3 class="card-title">By Category</h3><canvas id="analyticsCategoryChart"></canvas></div>
+                <div class="glossy-panel chart-card"><h3 class="card-title">By Week</h3><canvas id="analyticsWeeklyChart"></canvas></div>
+            </div>
+        </section>
+
+        <!-- 6. Settings -->
+        <section id="viewSettings" class="view-page">
+            <div class="page-header"><h2 class="page-title">Settings</h2></div>
+            <div class="glossy-panel setting-row">
+                <div><h3 class="card-title">Appearance</h3><p class="meta-label">Toggle between Light and Dark mode.</p></div>
+                <button id="themeToggleBtn" class="btn-sm-secondary" onclick="toggleTheme()">Switch to Dark Mode</button>
+            </div>
+            <div class="glossy-panel setting-row">
+                <div><h3 class="card-title">Load Demo Data</h3><p class="meta-label">Populate a "Goa Trip" group with Aman, Bina, Charan, Diya.</p></div>
+                <button class="btn-primary" onclick="loadDemoData()">Load Demo</button>
+            </div>
+            <div class="glossy-panel setting-row">
+                <div><h3 class="card-title" style="color:var(--rose)">Delete All Data</h3><p class="meta-label">Permanently remove all your groups and expenses.</p></div>
+                <button class="btn-danger" onclick="resetAllData()">Delete Data</button>
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<!-- ============================================================
+     MODALS
+     ============================================================ -->
+
+<!-- Group Modal -->
+<div id="groupModal" class="modal-overlay hidden">
+    <div class="modal-box glossy-panel">
+        <div class="modal-head"><h3 id="groupModalTitle" class="modal-title">Create Group</h3><button class="modal-close" onclick="closeModal('groupModal')">✕</button></div>
+        <form onsubmit="handleSaveGroup(event)">
+            <div class="form-group"><label>Group Name</label><div class="input-wrap"><input type="text" id="groupNameInput" required placeholder="e.g. Goa Trip"></div></div>
+            <div class="form-group">
+                <label>Members <span class="meta-label">(min 2)</span></label>
+                <div class="member-add-row">
+                    <div class="input-wrap" style="flex:1"><input type="text" id="newMemberNameInput" placeholder="Member name" onkeydown="if(event.key==='Enter'){event.preventDefault();handleAddMemberChip();}"></div>
+                    <button type="button" class="btn-sm-secondary" onclick="handleAddMemberChip()">Add</button>
+                </div>
+                <div id="modalMembersList" class="chips-editor"></div>
+            </div>
+            <div id="groupModalError" class="auth-error"></div>
+            <div class="modal-actions"><button type="button" class="btn-sm-secondary" onclick="closeModal('groupModal')">Cancel</button><button type="submit" class="btn-primary">Save Group</button></div>
+        </form>
     </div>
+</div>
 
-    <!-- Expense Modal -->
-    <div id="expenseModal" class="modal-backdrop hidden">
-        <div class="modal-card glossy-panel modal-lg">
-            <h3 id="expenseModalTitle" class="modal-title">Record Expense</h3>
-            <form onsubmit="handleSaveExpense(event)">
-                <div class="form-group">
-                    <label>Description</label>
-                    <input type="text" id="expDescInput" required placeholder="e.g. Dinner at Bistro">
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Amount (₹)</label>
-                        <input type="text" id="expAmountInput" required placeholder="1200.00" oninput="updateModalSharesUI()">
-                    </div>
-                    <div class="form-group">
-                        <label>Date (yyyy-MM-dd)</label>
-                        <input type="date" id="expDateInput" required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Paid By</label>
-                        <select id="expPayerSelect" required></select>
-                    </div>
-                    <div class="form-group">
-                        <label>Category</label>
-                        <select id="expCategorySelect" required>
-                            <option value="FOOD">Food & Dining</option>
-                            <option value="GROCERIES">Groceries</option>
-                            <option value="TRAVEL">Travel & Transport</option>
-                            <option value="ENTERTAINMENT">Entertainment</option>
-                            <option value="UTILITIES">Utilities & Bills</option>
-                            <option value="RENT">Rent & Stay</option>
-                            <option value="OTHER">Other</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Split Type</label>
-                    <select id="expSplitTypeSelect" onchange="updateModalSharesUI()">
-                        <option value="EQUAL">Equal Split</option>
-                        <option value="EXACT">Exact Amounts</option>
-                        <option value="PERCENTAGE">Percentage Split</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Split Between Members</label>
-                    <div id="expSharesContainer" class="shares-list"></div>
-                </div>
-                <div id="expenseModalError" class="error-msg"></div>
-                <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal('expenseModal')">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Expense</button>
-                </div>
-            </form>
-        </div>
+<!-- Expense Modal -->
+<div id="expenseModal" class="modal-overlay hidden">
+    <div class="modal-box modal-lg glossy-panel">
+        <div class="modal-head"><h3 id="expenseModalTitle" class="modal-title">Record Expense</h3><button class="modal-close" onclick="closeModal('expenseModal')">✕</button></div>
+        <form onsubmit="handleSaveExpense(event)">
+            <div class="form-group"><label>Description</label><div class="input-wrap"><input type="text" id="expDescInput" required placeholder="e.g. Dinner at Bistro"></div></div>
+            <div class="form-row-2">
+                <div class="form-group"><label>Amount (₹)</label><div class="input-wrap"><input type="text" id="expAmountInput" required placeholder="1200.00" oninput="updateModalSharesUI()"></div></div>
+                <div class="form-group"><label>Date</label><div class="input-wrap"><input type="date" id="expDateInput" required></div></div>
+            </div>
+            <div class="form-row-2">
+                <div class="form-group"><label>Paid By</label><div class="input-wrap"><select id="expPayerSelect" required></select></div></div>
+                <div class="form-group"><label>Category</label><div class="input-wrap"><select id="expCategorySelect">
+                    <option value="FOOD">Food &amp; Dining</option>
+                    <option value="GROCERIES">Groceries</option>
+                    <option value="TRAVEL">Travel &amp; Transport</option>
+                    <option value="ENTERTAINMENT">Entertainment</option>
+                    <option value="UTILITIES">Utilities &amp; Bills</option>
+                    <option value="RENT">Rent &amp; Stay</option>
+                    <option value="OTHER">Other</option>
+                </select></div></div>
+            </div>
+            <div class="form-group"><label>Split Type</label><div class="input-wrap"><select id="expSplitTypeSelect" onchange="updateModalSharesUI()">
+                <option value="EQUAL">Equal Split</option>
+                <option value="EXACT">Exact Amounts</option>
+                <option value="PERCENTAGE">Percentage Split</option>
+            </select></div></div>
+            <div class="form-group"><label>Split Between</label><div id="expSharesContainer" class="shares-container"></div></div>
+            <div id="expenseModalError" class="auth-error"></div>
+            <div class="modal-actions"><button type="button" class="btn-sm-secondary" onclick="closeModal('expenseModal')">Cancel</button><button type="submit" class="btn-primary">Save Expense</button></div>
+        </form>
     </div>
+</div>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="toast hidden"></div>
+<!-- Toast -->
+<div id="toast" class="toast hidden"></div>
 
-    <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
