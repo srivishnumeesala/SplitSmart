@@ -1,6 +1,18 @@
 /**
  * SplitSmart — Front-End Application Logic (ES6 Vanilla)
+ *
+ * API_BASE: Set this to your Railway backend URL when deploying to Vercel.
+ * Leave empty string '' to use the same origin (local development).
+ * Example: const API_BASE = 'https://splitsmart-api.up.railway.app';
  */
+const API_BASE = window.location.hostname.includes('vercel.app')
+    ? (window.SPLITSMART_API_URL || '')   // override via vercel env or rewrites
+    : '';                                  // local: same origin
+
+/** Wrapper so every fetch always hits the right host */
+function api(path, opts) {
+    return fetch(API_BASE + path, opts);
+}
 
 let currentUser = null;
 let currentGroup = null;
@@ -18,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // ==================== THEME MANAGEMENT ====================
 
 function initTheme() {
-    fetch('/api/settings')
+    api('/api/settings')
         .then(res => res.json())
         .then(data => {
             if (data.theme === 'DARK') {
@@ -40,7 +52,7 @@ function toggleTheme() {
     document.body.className = isDark ? 'theme-light' : 'theme-dark';
     updateThemeButton(!isDark);
 
-    fetch('/api/settings', {
+    api('/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ theme: newTheme })
@@ -57,7 +69,7 @@ function updateThemeButton(isDark) {
 // ==================== AUTHENTICATION ====================
 
 function checkAuth() {
-    fetch('/api/auth/me')
+    api('/api/auth/me')
         .then(res => {
             if (!res.ok) throw new Error();
             return res.json();
@@ -86,7 +98,7 @@ async function handleLoginSubmit(e) {
     const password = document.getElementById('loginPass').value;
 
     try {
-        const res = await fetch('/api/auth/login', {
+        const res = await api('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -118,7 +130,7 @@ async function handleRegisterSubmit(e) {
     }
 
     try {
-        const res = await fetch('/api/auth/register', {
+        const res = await api('/api/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ displayName, username, password })
@@ -135,7 +147,7 @@ async function handleRegisterSubmit(e) {
 }
 
 async function handleLogout() {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    await api('/api/auth/logout', { method: 'POST' });
     currentUser = null;
     showAuthView();
 }
@@ -209,7 +221,7 @@ async function loadDashboard() {
     });
 
     try {
-        const res = await fetch('/api/dashboard');
+        const res = await api('/api/dashboard');
         const data = await res.json();
 
         document.getElementById('kpiOwed').textContent = data.totalReceivableFormatted;
@@ -275,7 +287,7 @@ async function loadGroups() {
     grid.innerHTML = '<div style="color: var(--muted);">Loading groups...</div>';
 
     try {
-        const res = await fetch('/api/groups');
+        const res = await api('/api/groups');
         const groups = await res.json();
         grid.innerHTML = '';
 
@@ -454,13 +466,13 @@ async function handleDeleteGroup(groupId, name) {
 
 async function loadTransactions() {
     try {
-        const res = await fetch('/api/transactions');
+        const res = await api('/api/transactions');
         allTransactions = await res.json();
 
         // Populate groups filter
         const groupSelect = document.getElementById('filterGroup');
         groupSelect.innerHTML = '<option value="">All Groups</option>';
-        const groupsRes = await fetch('/api/groups');
+        const groupsRes = await api('/api/groups');
         const groups = await groupsRes.json();
         groups.forEach(g => {
             const opt = document.createElement('option');
@@ -551,7 +563,7 @@ function resetTransactionFilters() {
 
 async function loadAnalytics() {
     try {
-        const res = await fetch('/api/analytics');
+        const res = await api('/api/analytics');
         const data = await res.json();
 
         document.getElementById('analyticsTotalSpend').textContent = data.totalSpendFormatted;
@@ -566,7 +578,7 @@ async function loadAnalytics() {
         });
         document.getElementById('analyticsTopCat').textContent = topCat;
 
-        const groupsRes = await fetch('/api/groups');
+        const groupsRes = await api('/api/groups');
         const groups = await groupsRes.json();
         document.getElementById('analyticsGroupCount').textContent = groups.length;
 
@@ -667,7 +679,7 @@ async function handleSaveGroup(e) {
                 body: JSON.stringify({ name })
             });
         } else {
-            res = await fetch('/api/groups', {
+            res = await api('/api/groups', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, members: modalMembers })
@@ -885,7 +897,7 @@ function closeModal(modalId) {
 
 async function loadDemoData() {
     try {
-        const res = await fetch('/api/demo', { method: 'POST' });
+        const res = await api('/api/demo', { method: 'POST' });
         if (res.ok) {
             showToast('Demo data loaded for Aman, Bina, Charan, Diya!');
             loadDashboard();
@@ -898,7 +910,7 @@ async function loadDemoData() {
 async function resetAllData() {
     if (!confirm('Are you sure you want to permanently delete all your groups and expenses?')) return;
     try {
-        const res = await fetch('/api/reset', { method: 'POST' });
+        const res = await api('/api/reset', { method: 'POST' });
         if (res.ok) {
             showToast('All user data deleted.');
             loadDashboard();

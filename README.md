@@ -1,184 +1,117 @@
-# SplitSmart
+# SplitSmart 🧾
 
 > **Split expenses. Settle fairly. Stay friends.**
 
-SplitSmart is a clean, dependency-free Java application built for roommates, travel groups, and friends to record shared expenses, dynamically calculate net balances, and compute the optimal settle-up plan with the absolute minimum number of transfers.
-
-It is available in two modes:
-1. **Web Browser Application**: Running locally at **[http://localhost:8080](http://localhost:8080)** and deployable to any cloud platform (Docker, Render, Railway, etc.).
-2. **Desktop Swing Application**: Clean GUI with warm amber glossy styling.
-
-Built strictly with **Core Java (Java 21, JDK only)** without third-party frameworks, build tools, or external libraries.
+A full-stack expense-splitting app built with **pure Java 21** (no frameworks) and a **vanilla HTML/CSS/JS** frontend.
 
 ---
 
-## 🌐 Localhost Web Link
+## 🚀 Quick Start (Local)
 
-The web application is live locally:
-👉 **[http://localhost:8080](http://localhost:8080)**
+```bash
+# 1. Compile
+javac -d out -sourcepath src src/splitsmart/Main.java
 
----
+# 2. Run desktop GUI
+java -cp out splitsmart.Main
 
-## 🚀 How to Run
-
-### Option 1: Web Application (Browser)
-
-**On Windows:**
-```cmd
-run-web.bat
-```
-Or manually:
-```cmd
-javac -d out -sourcepath src src/splitsmart/WebMain.java
+# 3. Run web server  →  open http://localhost:8080
 java -cp out splitsmart.WebMain
 ```
-Then open **[http://localhost:8080](http://localhost:8080)** in your browser.
 
-**On macOS / Linux:**
+Or use the scripts:
 ```bash
-chmod +x run-web.sh
-./run-web.sh
-```
-
----
-
-### Option 2: Desktop GUI Application (Swing)
-
-**On Windows:**
-```cmd
+# Windows
 run.bat
-```
-Or manually:
-```cmd
-javac -d out -sourcepath src src/splitsmart/Main.java
-java -cp out splitsmart.Main
+
+# Linux / Mac
+chmod +x run.sh && ./run.sh
 ```
 
-**On macOS / Linux:**
+---
+
+## 🌐 Deploy to Vercel + Railway
+
+### Step 1 — Push to GitHub
 ```bash
-chmod +x run.sh
-./run.sh
+git remote add origin https://github.com/YOUR_USERNAME/splitsmart.git
+git push -u origin main
 ```
 
+### Step 2 — Deploy Backend to Railway (free)
+1. Go to [railway.app](https://railway.app) → **New Project** → **Deploy from GitHub repo**
+2. Select your `splitsmart` repository
+3. Railway auto-detects the `Dockerfile` and builds it
+4. After deploy, copy your app URL: `https://splitsmart-xxxx.up.railway.app`
+
+### Step 3 — Deploy Frontend to Vercel
+1. Go to [vercel.com](https://vercel.com) → **New Project** → import your GitHub repo
+2. Set **Root Directory** to `web`
+3. Framework preset: **Other** (static)
+4. Add environment variable:
+   - Key: `SPLITSMART_API_URL`
+   - Value: `https://splitsmart-xxxx.up.railway.app` (your Railway URL)
+5. Update `vercel.json` → replace `YOUR-RAILWAY-APP` with your actual Railway hostname
+6. Click **Deploy** ✅
+
 ---
 
-### Option 3: Run the Automated Tests
+## 📁 Project Structure
 
-**Core Settlement Logic Test Suite (`SettlementTest.java`):**
-```cmd
-javac -d out -sourcepath src src/splitsmart/test/SettlementTest.java
-java -cp out splitsmart.test.SettlementTest
 ```
-Or run `test.bat` on Windows.
-
-**End-to-End Walkthrough Test Suite (`EndToEndTest.java`):**
-```cmd
-javac -d out -sourcepath src src/splitsmart/test/EndToEndTest.java
-java -cp out splitsmart.test.EndToEndTest
-```
-
----
-
-## 📦 How to Upload to GitHub
-
-Follow these steps to upload SplitSmart to your GitHub account:
-
-1. **Create a new repository on GitHub:**
-   - Go to [github.com/new](https://github.com/new)
-   - Repository name: `SplitSmart`
-   - Set to **Public** or **Private** (do **NOT** check "Initialize this repository with a README", as we already have one)
-   - Click **Create repository**
-
-2. **Push your code to GitHub from your terminal:**
-   Open Command Prompt / PowerShell in this directory (`C:\Users\srivi\.gemini\antigravity\scratch\SplitSmart`):
-   ```cmd
-   git add .
-   git commit -m "Initial commit: SplitSmart desktop and web application"
-   git remote add origin https://github.com/YOUR_GITHUB_USERNAME/SplitSmart.git
-   git branch -M main
-   git push -u origin main
-   ```
-   *(Replace `YOUR_GITHUB_USERNAME` with your actual GitHub username)*
-
----
-
-## ☁️ How to Deploy to the Cloud (Free)
-
-SplitSmart has zero external dependencies, making it deployable on any platform:
-
-### Method A: Deploy on Render (Free)
-1. Go to [render.com](https://render.com) and connect your GitHub account.
-2. Click **New +** -> **Web Service**.
-3. Select your `SplitSmart` repository.
-4. Settings:
-   - **Environment**: `Docker` (SplitSmart includes a production `Dockerfile`)
-   - **Region**: Choose the closest region.
-   - **Plan**: `Free`
-5. Click **Create Web Service**. Render will automatically build the multi-stage Docker image and provide you with a live `https://splitsmart-xxxx.onrender.com` URL!
-
-### Method B: Deploy on Railway (Free)
-1. Go to [railway.app](https://railway.app) and sign in with GitHub.
-2. Click **New Project** -> **Deploy from GitHub repo**.
-3. Select `SplitSmart`. Railway will detect the `Dockerfile` or `Procfile` and deploy automatically with an assigned public URL.
-
-### Method C: Run Anywhere with Docker
-```bash
-docker build -t splitsmart .
-docker run -p 8080:8080 splitsmart
-```
-Then visit `http://localhost:8080`.
-
----
-
-## 💡 Settle-Up Algorithm Explanation
-
-1. Each member's net balance is calculated as total paid minus total share (summing to zero).
-2. Members are divided into two distinct groups: receivers (net > 0) and payers (net < 0).
-3. The algorithm greedily pairs the member who is owed the most with the member who owes the most.
-4. A transfer is scheduled for the smaller of the two amounts, clearing at least one member's debt.
-5. Both participants' balances are updated, and any member whose balance reaches zero is removed.
-6. The matching repeats until all balances reach zero, guaranteeing settlement in at most N - 1 transfers.
-
----
-
-## 📂 Project Structure
-
-```text
 SplitSmart/
-├── Dockerfile                          (Multi-stage production container build)
-├── Procfile                            (Cloud dyno runner configuration)
-├── README.md                           (Complete documentation)
-├── run-web.bat                         (Windows web launcher: http://localhost:8080)
-├── run-web.sh                          (Mac/Linux web launcher)
-├── run.bat                             (Windows desktop Swing launcher)
-├── run.sh                              (Mac/Linux desktop Swing launcher)
-├── test.bat                            (Windows test runner)
-├── data/                               (Auto-managed persistent CSV storage)
-├── web/                                (Web browser frontend — vanilla HTML/CSS/JS)
-│   ├── index.html                      (Responsive SPA structure & modals)
-│   ├── style.css                       (Warm Amber Glossy Light & Dark CSS)
-│   └── app.js                          (Dynamic client logic, charts & API client)
-└── src/
-    └── splitsmart/
-        ├── Main.java                   (Desktop GUI application entry point)
-        ├── WebMain.java                (Web application entry point with port binding)
-        ├── model/                      (Core entities: User, Group, Member, Expense, Transfer, Category, SplitType)
-        ├── logic/                      (BalanceCalculator, SettlementPlanner, SplitCalculator, Money, Validator)
-        ├── storage/                    (DataStore with CSV persistence, PasswordUtil with salted SHA-256)
-        ├── web/                        (Built-in JDK HttpServer REST API & SimpleJson)
-        ├── ui/                         (Desktop Swing components with Warm Amber Theme & Java2D graphics)
-        └── test/                       (SettlementTest console tests & EndToEndTest walkthrough)
+├── src/splitsmart/
+│   ├── Main.java              # Swing desktop entry point
+│   ├── WebMain.java           # Web server entry point
+│   ├── model/                 # User, Group, Member, Expense, Transfer, enums
+│   ├── logic/                 # BalanceCalculator, SettlementPlanner, SplitCalculator, Money, Validator
+│   ├── storage/               # DataStore (CSV persistence), PasswordUtil
+│   ├── ui/                    # Swing UI panels
+│   ├── web/                   # WebServer.java (REST API, built-in JDK HttpServer)
+│   └── test/                  # SettlementTest.java (plain main() tests)
+├── web/                       # Frontend (HTML + CSS + vanilla JS)
+│   ├── index.html
+│   ├── style.css
+│   └── app.js
+├── data/                      # Auto-created CSV files at runtime
+├── Dockerfile                 # For Railway / Docker deployment
+├── railway.json               # Railway config
+├── vercel.json                # Vercel static + API proxy config
+├── run.bat                    # Windows run script
+└── run.sh                     # Linux/Mac run script
 ```
 
 ---
 
-## 🌟 Key Features
+## ✨ Features
 
-1. **Authentication & Multi-User Isolation**: Salted SHA-256 password hashing. Users only see their own groups.
-2. **Expense Splitting**: Equal (with 1-paisa rounding fix), Exact amounts, and Percentage splits.
-3. **Dynamic Balances**: Balances recompute dynamically from the expense ledger; net sum is always zero.
-4. **Minimum Cash Flow Settlement**: Greedily matches largest debtors and creditors for minimum transfers.
-5. **Interactive Mark as Paid**: Immediately records settlements and updates balances.
-6. **Analytics & Dashboards**: High-DPI category and weekly spending charts.
-7. **Warm Amber Theme**: Live Light and Dark mode toggling.
-8. **Resilient CSV Persistence**: Auto-saves after modifications with error-tolerant CSV parsing.
+| Feature | Detail |
+|---|---|
+| **Auth** | Register/Login with salted SHA-256 passwords |
+| **Groups** | Create groups, add/remove members |
+| **Expenses** | Equal / Exact / Percentage splits |
+| **Balances** | Auto-computed, never stored |
+| **Settle-up** | Greedy min-transfers algorithm |
+| **Dashboard** | Net balance, recent activity, spending chart |
+| **Transactions** | Filter by group, category, search |
+| **Analytics** | Bar charts by category and by week |
+| **Settings** | Light / Dark theme, demo data, reset |
+| **Storage** | Plain CSV files, auto-save, crash-safe |
+
+---
+
+## 🔧 Tech Stack
+
+- **Backend**: Java 21 JDK — `com.sun.net.httpserver.HttpServer` (zero dependencies)
+- **Frontend**: HTML5 + CSS3 + Vanilla JS (ES6)  
+- **Storage**: Plain CSV files
+- **Desktop GUI**: Java Swing
+
+---
+
+## 📝 Notes
+
+- All money stored as **paise** (long integer) — no floating-point rounding errors
+- Passwords hashed with **SHA-256 + SecureRandom salt**
+- Settlement uses **greedy min-flow algorithm** (at most N-1 transfers)
+- No Maven, Gradle, or external libraries used anywhere
