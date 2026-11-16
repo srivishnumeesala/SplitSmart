@@ -3,8 +3,8 @@ out/
 bin/
 *.class
 
-# Persistent data directory (optional to commit or ignore; demo data created at runtime)
-# keep directory structure
+# Persistent data — runtime CSV files; excluded so GitHub stays clean
+data/*.csv
 build_test_data/
 e2e_test_data/
 

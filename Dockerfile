@@ -3,7 +3,7 @@ FROM eclipse-temurin:21-jdk-alpine AS builder
 
 WORKDIR /app
 COPY src ./src
-RUN mkdir -p out && javac -d out -sourcepath src src/splitsmart/WebMain.java
+RUN mkdir -p out && find src -name "*.java" | xargs javac -d out
 
 FROM eclipse-temurin:21-jre-alpine
 

@@ -1,7 +1,0 @@
-id,groupId,description,amountPaise,date,payerMemberId,category,splitType,shares
-exp_demo_1,grp_demo_40062a,Dinner at Bistro,120000,2026-11-08,mem_aman,FOOD,EQUAL,mem_diya:30000;mem_charan:30000;mem_bina:30000;mem_aman:30000
-exp_demo_2,grp_demo_40062a,Groceries & Snacks,80000,2026-11-09,mem_bina,GROCERIES,EQUAL,mem_diya:20000;mem_charan:20000;mem_bina:20000;mem_aman:20000
-exp_demo_3,grp_demo_40062a,Cab to Beach,60000,2026-11-10,mem_charan,TRAVEL,EQUAL,mem_charan:20000;mem_aman:20000;mem_bina:20000
-exp_demo_4,grp_demo_40062a,Water Sports,100000,2026-11-11,mem_diya,ENTERTAINMENT,EQUAL,mem_diya:25000;mem_charan:25000;mem_bina:25000;mem_aman:25000
-exp_demo_5,grp_demo_40062a,Villa Electricity & Wifi,150000,2026-11-12,mem_aman,UTILITIES,EQUAL,mem_diya:37500;mem_charan:37500;mem_bina:37500;mem_aman:37500
-exp_settle_d3e2ba7a,grp_demo_40062a,Settlement: Charan paid Aman,72500,2026-11-12,mem_charan,SETTLEMENT,EXACT,mem_aman:72500
