@@ -1,27 +1,13 @@
 {
   "version": 2,
-  "name": "splitsmart",
-  "builds": [
+  "rewrites": [
     {
-      "src": "web/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "https://YOUR-RAILWAY-APP.up.railway.app/api/$1",
-      "headers": {
-        "Access-Control-Allow-Origin": "*"
-      }
+      "source": "/api/(.*)",
+      "destination": "https://splitsmart.onrender.com/api/$1"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "/web/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/web/$1"
+      "source": "/(.*)",
+      "destination": "/$1"
     }
   ]
 }
