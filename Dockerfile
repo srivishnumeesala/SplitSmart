@@ -1,24 +1,20 @@
 # ============================================================
 # SplitSmart — Docker Build (Railway compatible)
+# Using full JDK in both stages so Railway can find javac
 # ============================================================
 
 FROM eclipse-temurin:21-jdk AS builder
 
 WORKDIR /app
-
-# Copy all source files
 COPY src ./src
+RUN mkdir -p out \
+    && find src -type f -name "*.java" > /tmp/sources.txt \
+    && javac -d out @/tmp/sources.txt \
+    && echo "Build complete — compiled classes:"  \
+    && ls out/splitsmart/
 
-# Compile using shell script approach for maximum compatibility
-RUN mkdir -p out && \
-    find src -type f -name "*.java" > /tmp/sources.txt && \
-    cat /tmp/sources.txt && \
-    javac -d out @/tmp/sources.txt && \
-    echo "=== Compilation successful ===" && \
-    ls -la out/splitsmart/
-
-# --- Runtime image ---
-FROM eclipse-temurin:21-jre
+# Runtime: use full JDK (not JRE) so Railway can find javac
+FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
@@ -27,11 +23,7 @@ COPY web ./web
 
 RUN mkdir -p data
 
-# Railway sets PORT dynamically
 ENV PORT=8080
 EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:${PORT}/ || exit 1
-
-CMD ["sh", "-c", "java -cp out splitsmart.WebMain"]
+CMD ["java", "-cp", "out", "splitsmart.WebMain"]
