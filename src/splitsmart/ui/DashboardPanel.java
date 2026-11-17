@@ -52,6 +52,29 @@ public class DashboardPanel extends JPanel {
         refreshUI();
     }
 
+    private BalanceCalculator.MemberBalance findUserMemberBalance(List<BalanceCalculator.MemberBalance> bList, User user) {
+        if (bList == null || bList.isEmpty()) {
+            return null;
+        }
+        if (user != null) {
+            String dn = user.getDisplayName() != null ? user.getDisplayName().trim() : "";
+            String un = user.getUsername() != null ? user.getUsername().trim() : "";
+            for (BalanceCalculator.MemberBalance b : bList) {
+                String mName = b.getMember().getName().trim();
+                if ((!dn.isEmpty() && mName.equalsIgnoreCase(dn)) ||
+                    (!un.isEmpty() && mName.equalsIgnoreCase(un))) {
+                    return b;
+                }
+            }
+        }
+        for (BalanceCalculator.MemberBalance b : bList) {
+            if (b.getNetPaise() > 0) {
+                return b;
+            }
+        }
+        return bList.get(0);
+    }
+
     public void refreshUI() {
         removeAll();
 
@@ -90,13 +113,12 @@ public class DashboardPanel extends JPanel {
         for (int i = 0; i < userGroups.size(); i++) {
             Group g = userGroups.get(i);
             List<BalanceCalculator.MemberBalance> bList = BalanceCalculator.calculateGroupBalances(g);
-            for (int j = 0; j < bList.size(); j++) {
-                long net = bList.get(j).getNetPaise();
-                if (net > 0) {
-                    totalReceivable += net;
-                } else if (net < 0) {
-                    totalPayable += (-net);
-                }
+            BalanceCalculator.MemberBalance userBal = findUserMemberBalance(bList, user);
+            long userNet = userBal != null ? userBal.getNetPaise() : 0L;
+            if (userNet > 0) {
+                totalReceivable += userNet;
+            } else if (userNet < 0) {
+                totalPayable += (-userNet);
             }
         }
         long netOverall = totalReceivable - totalPayable;

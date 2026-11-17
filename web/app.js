@@ -78,15 +78,25 @@ function checkAuth() {
             onLoginSuccess(user);
         })
         .catch(() => {
-            showAuthView();
+            // Direct entry mode: proceed directly to application
+            onLoginSuccess({ displayName: 'Student', username: 'student' });
         });
 }
 
+function switchTab(tab) {
+    const isRegister = (tab === 'signup');
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const tabLogin = document.getElementById('tabLoginBtn');
+    const tabSignup = document.getElementById('tabSignupBtn');
+    if (loginForm) loginForm.classList.toggle('hidden', isRegister);
+    if (signupForm) signupForm.classList.toggle('hidden', !isRegister);
+    if (tabLogin) tabLogin.classList.toggle('active', !isRegister);
+    if (tabSignup) tabSignup.classList.toggle('active', isRegister);
+}
+
 function toggleAuthMode(isRegister) {
-    document.getElementById('loginForm').classList.toggle('hidden', isRegister);
-    document.getElementById('registerForm').classList.toggle('hidden', !isRegister);
-    document.getElementById('loginError').textContent = '';
-    document.getElementById('registerError').textContent = '';
+    switchTab(isRegister ? 'signup' : 'login');
 }
 
 async function handleLoginSubmit(e) {
@@ -154,11 +164,17 @@ async function handleLogout() {
 
 function onLoginSuccess(user) {
     currentUser = user;
-    document.getElementById('sidebarUserName').textContent = user.displayName;
-    document.getElementById('sidebarUserHandle').textContent = '@' + user.username;
+    const nameEl = document.getElementById('sidebarUserName');
+    if (nameEl && user && user.displayName) nameEl.textContent = user.displayName;
+    const handleEl = document.getElementById('sidebarUserHandle');
+    if (handleEl && user && user.username) handleEl.textContent = '@' + user.username;
+    const avatarEl = document.getElementById('userAvatar');
+    if (avatarEl && user && user.displayName) avatarEl.textContent = user.displayName.charAt(0).toUpperCase();
 
-    document.getElementById('authContainer').classList.add('hidden');
-    document.getElementById('appContainer').classList.remove('hidden');
+    const authContainer = document.getElementById('authContainer');
+    if (authContainer) authContainer.classList.add('hidden');
+    const appContainer = document.getElementById('appContainer');
+    if (appContainer) appContainer.classList.remove('hidden');
 
     navigateTo('dashboard');
 }

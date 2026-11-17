@@ -516,9 +516,25 @@ label {
 .page-date  { font-size: 13px; color: var(--muted); }
 
 /* ── Buttons ───────────────────────────────────────────────── */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: var(--font);
+    font-size: 13.5px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    border: none;
+}
+
 .btn-primary {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
     padding: 9px 18px;
     background: linear-gradient(180deg, #F07B28 0%, #D4620F 100%);
@@ -544,9 +560,11 @@ label {
 .btn-primary:hover  { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(232,114,28,0.38); }
 .btn-primary:active { transform: translateY(0); }
 
-.btn-sm-secondary {
+.btn-sm-secondary,
+.btn-secondary {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
     padding: 7px 13px;
     background: var(--raised);
@@ -559,16 +577,24 @@ label {
     cursor: pointer;
     transition: var(--transition);
 }
-.btn-sm-secondary:hover { background: var(--border); }
+.btn-sm-secondary:hover,
+.btn-secondary:hover { background: var(--border); }
+
+.btn-sm {
+    padding: 5px 10px !important;
+    font-size: 11.5px !important;
+}
 
 .btn-danger {
     display: inline-flex;
     align-items: center;
-    padding: 9px 18px;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 13px;
     background: rgba(207,78,66,0.10);
     color: var(--rose);
     font-family: var(--font);
-    font-size: 13.5px;
+    font-size: 12.5px;
     font-weight: 600;
     border: 1px solid rgba(207,78,66,0.25);
     border-radius: var(--radius-sm);
